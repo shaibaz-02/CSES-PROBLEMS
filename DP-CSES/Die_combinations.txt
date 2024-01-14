@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	// your code goes here
+	int modd=1e9+7;
+	int n;cin>>n;
+	vector<int>dp(n+1,0);
+	dp[0]=1;
+	for(int i=1;i<=n;i++){
+		for(int dice=1;dice<=6;dice++){
+			if(dice>i){
+				continue;
+			}
+			dp[i]=(dp[i]+dp[i-dice])%modd;
+		}
+	}
+	cout<<dp[n];
+	return 0;
+}
