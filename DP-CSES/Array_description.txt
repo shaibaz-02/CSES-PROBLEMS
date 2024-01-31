@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+#define ll long long
+ 
+int main() {
+    // read input
+    int n, m;
+    cin >> n >> m;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) cin >> arr[i];
+    ll MOD = 1e9 + 7;
+ 
+    // initialize the dp tables (prev, dp)
+    vector<ll> prev(m + 1);
+    vector<ll> dp(m + 1);
+    if (arr[0] == 0)
+        fill(prev.begin() + 1, prev.end(), 1);
+    else
+        prev[arr[0]] = 1;
+ 
+    // build the tables
+    for (int i = 1; i < n; i++) {
+        int lowerBound = arr[i] == 0 ? 1 : arr[i];
+        int upperBound = arr[i] == 0 ? m : arr[i];
+        for (int val = lowerBound; val <= upperBound; val++) {
+            dp[val] += prev[val];
+            if (val > 1) dp[val] += prev[val - 1];
+            if (val < m) dp[val] += prev[val + 1];
+            dp[val] %= MOD;
+        }
+        swap(dp, prev);
+        fill(dp.begin(), dp.end(), 0l);
+    }
+    ll ans = accumulate(prev.begin(), prev.end(), 0l);
+    cout << (ans % MOD);
+ 
+    return 0;
+}
