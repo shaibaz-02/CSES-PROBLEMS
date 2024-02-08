@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+void setFastInputOutput() {
+    cin.tie(nullptr)->sync_with_stdio(false);
+}
+
+class Messageroute{
+	public:
+	Messageroute(){
+		readInput();
+		computeBFS();
+		printResult();
+	}
+	int n,m;
+	vector<vector<int>>adjL;
+	void readInput(){
+		cin>>n>>m;
+		adjL=vector<vector<int>>(n+1);
+		for(int i=0;i<m;i++){
+			int a,b;cin>>a>>b;
+			adjL[a].push_back(b);
+			adjL[b].push_back(a);
+		}
+	}
+	vector<int>parents;
+	void computeBFS(){
+		parents=vector<int>(n+1);
+		queue<int>q;
+		q.push(1);
+		parents[1]=-1;
+		while(!q.empty()){
+			int node=q.front();
+			q.pop();
+			for(auto child:adjL[node]){
+				if(parents[child]!=0){
+					continue;
+				}
+				parents[child]=node;
+				q.push(child);
+			}
+		}
+	}
+	void printResult(){
+		if(parents[n]==0){
+			cout<<"IMPOSSIBLE";
+			return;
+		}
+		vector<int>path;
+		int node=n;
+		while(node!=-1){
+			path.push_back(node);
+			node=parents[node];
+		}
+		reverse(path.begin(),path.end());
+		cout<<path.size()<<"\n";
+		for(auto ele:path){
+			cout<<ele<<" ";
+		}
+	}
+};
+int main() {
+	// your code goes here
+    setFastInputOutput();
+	Messageroute solver;
+	return 0;
+}
